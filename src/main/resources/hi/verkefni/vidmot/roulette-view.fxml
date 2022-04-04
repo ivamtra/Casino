@@ -13,5 +13,6 @@
          </image>
       </ImageView>
       <Button fx:id="fxSpinButton" layoutX="470.0" layoutY="91.0" mnemonicParsing="false" onAction="#spin" text="Spin" />
+      <Button layoutX="464.0" layoutY="147.0" mnemonicParsing="false" onAction="#goBack" text="Go back" />
    </children>
 </Pane>
