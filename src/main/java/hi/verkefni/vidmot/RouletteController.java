@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -47,17 +48,15 @@ public class RouletteController implements Initializable {
     @FXML
     private Text fxMoneyText;
 
-    // Offset = -2.6 gradur
-    // Þ.e. 00 er i -2.6 gradum
+    @FXML
+    private TextField fxTextField;
 
     // -1 taknar 00
-
     // index 0 og 19 eru grænir
     private int[] numbers = {-1, 27, 10, 35, 29, 12, 8, 19, 31, 18, 6, 21, 33, 16, 4, 23, 35, 14, 2, 0, 28, 9, 26, 30, 11, 7, 20, 32, 17, 5, 22, 34, 15, 3, 24, 36, 13, 1};
     private boolean[] isRed;
     private HashMap<Integer, Integer> numberMap;
 
-    private boolean[] isRedBlackGreen; // Red, Black, Green;
 
 
 
@@ -85,6 +84,9 @@ public class RouletteController implements Initializable {
         //System.out.println(x);
         return -100;
     }
+
+
+    //--------------------- Initializer --------------------------
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -117,30 +119,16 @@ public class RouletteController implements Initializable {
 
     }
 
-    // Gæti farið í vinnslu með fxRouletteImage sem argument
-    public int getnumber() {
-        double angle = fxRouletteImage.getRotate() % 360;
-
-        double angleOfNumber = 360 - angle;
-
-        double offSet = -2.6;
-        double step = 360/38.0; // Gradur sem hver tala tekur
-
-        int iterator = 0;
-
-        while(iterator*step - offSet < angleOfNumber) {
-            iterator++;
-        }
-        try {
-            return numbers[iterator];
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            return  -1;
-        }
-    }
 
 
 
+
+
+
+
+
+
+    // ------------------------ Handlerar ---------------------------------
 
     @FXML
     public void goBack(ActionEvent event) throws IOException {
@@ -151,22 +139,8 @@ public class RouletteController implements Initializable {
         stage.show();
     }
 
-    // Gæti farið i vinnslu
-    public void setIsRed() {
-        isRed = new boolean[38];
-        for (int i = 0; i < 38; i++) {
-            if (i % 2 == 0) {
-                isRed[i] = false;
-            }
-            else
-                isRed[i] = true;
-        }
-        // Grænn
-        isRed[19] = false;
-    }
 
     public void betOnRed(ActionEvent event) throws InterruptedException {
-        isRedBlackGreen = new boolean[]{true, false, false};
         spin();
 
         timeline.setOnFinished(e ->
@@ -180,13 +154,11 @@ public class RouletteController implements Initializable {
                     }
                     else
                         loser();
-                    Arrays.fill(isRedBlackGreen, false);
                 }
         );
     }
 
     public void betOnBlack(ActionEvent event) throws InterruptedException {
-        isRedBlackGreen = new boolean[]{false, true, false};
         spin();
 
         timeline.setOnFinished(e -> {
@@ -211,7 +183,6 @@ public class RouletteController implements Initializable {
     }
 
     public void betOnGreen(ActionEvent event) throws InterruptedException {
-        isRedBlackGreen = new boolean[]{false, false, true};
         spin();
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber();
@@ -224,9 +195,75 @@ public class RouletteController implements Initializable {
         });
     }
 
+    public void betOnOdds(ActionEvent event) throws InterruptedException {
+        spin();
+        timeline.setOnFinished(e -> {
+            numberLandedOn = getnumber();
+
+
+            if (numberLandedOn % 2 == 1)
+                winner();
+            else
+                loser();
+            System.out.println(numberLandedOn);
+
+        });
+    }
+
+    public void betOnEvens(ActionEvent event) throws InterruptedException {
+        spin();
+        timeline.setOnFinished(e -> {
+            numberLandedOn = getnumber();
+
+
+            if (numberLandedOn % 2 == 1)
+                loser();
+            else
+                winner();
+            System.out.println(numberLandedOn);
+
+        });
+    }
+
+    public void betOnNumber(ActionEvent event) throws InterruptedException {
+        spin();
+
+        timeline.setOnFinished(e -> {
+            numberLandedOn = getnumber();
+            if (numberLandedOn == Integer.parseInt(fxTextField.getText()))
+                winner();
+            else
+                loser();
+            System.out.println(numberLandedOn);
+
+        });
+
+    }
+    
 
 
 
+
+
+
+
+    //--------------- Vinnsluföll -----------------------------
+
+    // Hægt að bæta við isBlack(), isRed() o.s.frv.
+
+
+    public void setIsRed() {
+        isRed = new boolean[38];
+        for (int i = 0; i < 38; i++) {
+            if (i % 2 == 0) {
+                isRed[i] = false;
+            }
+            else
+                isRed[i] = true;
+        }
+        // Grænn
+        isRed[19] = false;
+    }
 
     public void setHashMap() {
         numberMap = new HashMap<>();
@@ -248,4 +285,28 @@ public class RouletteController implements Initializable {
         System.out.println(Peningur.PENINGUR);
         fxMoneyText.setText("" + Peningur.PENINGUR);
     }
+
+    // Gæti farið í vinnslu með fxRouletteImage sem argument
+    public int getnumber() {
+        double angle = fxRouletteImage.getRotate() % 360;
+
+        double angleOfNumber = 360 - angle;
+
+        double offSet = -2.6;
+        double step = 360/38.0; // Gradur sem hver tala tekur
+
+        int iterator = 0;
+
+        while(iterator*step - offSet < angleOfNumber) {
+            iterator++;
+        }
+        try {
+            return numbers[iterator];
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            return  -1;
+        }
+    }
+
+
 }
