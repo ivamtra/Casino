@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -43,6 +44,9 @@ public class RouletteController implements Initializable {
 
     private int numberLandedOn;
 
+    @FXML
+    private Text fxMoneyText;
+
     // Offset = -2.6 gradur
     // Þ.e. 00 er i -2.6 gradum
 
@@ -54,6 +58,7 @@ public class RouletteController implements Initializable {
     private HashMap<Integer, Integer> numberMap;
 
     private boolean[] isRedBlackGreen; // Red, Black, Green;
+
 
 
     public int spin() throws InterruptedException {
@@ -77,47 +82,6 @@ public class RouletteController implements Initializable {
         timeline.setCycleCount((int) doubleInitialVelocity*100);
         timeline.play();
 
-        timeline.setOnFinished(e ->
-                {
-                   numberLandedOn = getnumber();
-                   System.out.println(numberLandedOn);
-
-                   // Rauður bettaður
-                   if (isRedBlackGreen[0]) {
-                        if (isRed[numberMap.get(numberLandedOn)]) {
-                            winner();
-                        }
-                        else
-                            loser();
-                   }
-                   // Svartur bettaður
-                   else if (isRedBlackGreen[1]) {
-                       // Ekki rauður
-                       if (!isRed[numberMap.get(numberLandedOn)]) {
-                           // Grænn
-                           if (numberLandedOn == -1  || numberLandedOn == 0) {
-                               loser();
-                           }
-                           else {
-                               winner();
-                           }
-
-                       }
-                       else {
-                           loser();
-                       }
-                   }
-                   else if (isRedBlackGreen[2]) {
-                       if (numberLandedOn == -1 || numberLandedOn == 0) {
-                           winner();
-                       }
-                       else
-                           loser();
-                   }
-                    Arrays.fill(isRedBlackGreen, false);
-                }
-                );
-
         //System.out.println(x);
         return -100;
     }
@@ -127,6 +91,7 @@ public class RouletteController implements Initializable {
         // Upphafsstillir isRed fylkið
         setIsRed();
         setHashMap();
+        fxMoneyText.setText("" + Peningur.PENINGUR);
 
 
 
@@ -203,17 +168,65 @@ public class RouletteController implements Initializable {
     public void betOnRed(ActionEvent event) throws InterruptedException {
         isRedBlackGreen = new boolean[]{true, false, false};
         spin();
+
+        timeline.setOnFinished(e ->
+                {
+                    numberLandedOn = getnumber();
+                    System.out.println(numberLandedOn);
+
+                    // Rauður bettaður
+                    if (isRed[numberMap.get(numberLandedOn)]) {
+                        winner();
+                    }
+                    else
+                        loser();
+                    Arrays.fill(isRedBlackGreen, false);
+                }
+        );
     }
 
     public void betOnBlack(ActionEvent event) throws InterruptedException {
         isRedBlackGreen = new boolean[]{false, true, false};
         spin();
+
+        timeline.setOnFinished(e -> {
+            numberLandedOn = getnumber();
+
+            // Svartur bettaður
+
+            // Ekki rauður
+            if (!isRed[numberMap.get(numberLandedOn)]) {
+                // Grænn
+                if (numberLandedOn == -1  || numberLandedOn == 0)
+                    loser();
+                else
+                    winner();
+            }
+            else
+                loser();
+
+            System.out.println(numberLandedOn);
+
+        });
     }
 
     public void betOnGreen(ActionEvent event) throws InterruptedException {
         isRedBlackGreen = new boolean[]{false, false, true};
         spin();
+        timeline.setOnFinished(e -> {
+            numberLandedOn = getnumber();
+            if (numberLandedOn == -1 || numberLandedOn == 0) {
+                    winner();
+                }
+                else
+                    loser();
+                System.out.println(numberLandedOn);
+        });
     }
+
+
+
+
 
     public void setHashMap() {
         numberMap = new HashMap<>();
@@ -226,11 +239,13 @@ public class RouletteController implements Initializable {
         System.out.println("Winner");
         Peningur.PENINGUR += 500;
         System.out.println(Peningur.PENINGUR);
+        fxMoneyText.setText("" + Peningur.PENINGUR);
     }
 
     public void loser() {
         System.out.println("Loser");
         Peningur.PENINGUR -= 500;
         System.out.println(Peningur.PENINGUR);
+        fxMoneyText.setText("" + Peningur.PENINGUR);
     }
 }
