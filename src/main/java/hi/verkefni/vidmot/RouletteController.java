@@ -108,7 +108,12 @@ public class RouletteController implements Initializable {
         while(iterator*step - offSet < angleOfNumber) {
             iterator++;
         }
-        return numbers[iterator];
+        try {
+            return numbers[iterator];
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            return  -1;
+        }
     }
 
 
