@@ -1,4 +1,4 @@
-package hi.verkefni.vinnsla;
+package hi.verkefni.vinnnsla;
 
 import hi.verkefni.vinnsla.LeikmadurInterface;
 import hi.verkefni.vinnsla.SpilV;

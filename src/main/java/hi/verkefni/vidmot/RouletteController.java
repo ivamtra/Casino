@@ -1,5 +1,6 @@
 package hi.verkefni.vidmot;
 
+import hi.verkefni.vinnnsla.Peningur;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -70,6 +71,7 @@ public class RouletteController implements Initializable {
                     System.out.println(getnumber());
                 }
                 );
+        Peningur.PENINGUR -= 500;
 
     }
 
