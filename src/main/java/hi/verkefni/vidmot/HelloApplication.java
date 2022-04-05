@@ -1,5 +1,6 @@
 package hi.verkefni.vidmot;
 
+import hi.verkefni.vinnnsla.Peningur;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,8 @@ public class HelloApplication extends Application {
         stage.setTitle("Casino");
         stage.setScene(scene);
         stage.show();
+
+        Peningur.PENINGUR = 5000;
     }
 
     public static void main(String[] args) {
