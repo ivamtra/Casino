@@ -1,0 +1,10 @@
+Bæta við styling á alla takka
+Bæta við betting við rúlettu
+
+Bæta við betting í blackjack
+Bæta við double í blackjack
+
+Bæta við margar hendur í blackjack
+
+Bæta við eye candy við blackjack
+Bæta við eyecandy við rúlettu

@@ -22,10 +22,10 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        Peningur.PENINGUR = 5000;
     }
 
     public static void main(String[] args) {
+        Peningur.PENINGUR = 5000;
         launch();
     }
 }
