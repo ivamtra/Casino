@@ -1,6 +1,7 @@
 module hi.verkefni.main {
     requires javafx.controls;
     requires javafx.fxml;
+    requires Spil21Library;
 
 
     //opens hi.verkefni.vinnsla to javafx.fxml;

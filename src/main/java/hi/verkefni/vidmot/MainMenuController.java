@@ -44,7 +44,7 @@ public class MainMenuController {
     public void BlackjackIconHandler(MouseEvent event) throws IOException {
         System.out.println("Blackjack Icon clicked");
 
-        root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        root = FXMLLoader.load(getClass().getResource("blackjack-view.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -53,16 +53,6 @@ public class MainMenuController {
 
     }
 
-    @FXML
-    public void buttonHandler(ActionEvent e) throws IOException {
-        System.out.println("Blackjack Icon clicked");
-
-        root = FXMLLoader.load(getClass().getResource("mainMenu-view.fxml"));
-        stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 
     @FXML
     public void rouletteIconHandler(MouseEvent event) throws IOException {
