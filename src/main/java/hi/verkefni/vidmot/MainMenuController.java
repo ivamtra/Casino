@@ -52,7 +52,7 @@ public class MainMenuController implements Initializable {
     public void BlackjackIconHandler(MouseEvent event) throws IOException {
         System.out.println("Blackjack Icon clicked");
 
-        root = FXMLLoader.load(getClass().getResource("blackjack-view.fxml"));
+        root = FXMLLoader.load(getClass().getResource("newBlackjack-view.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

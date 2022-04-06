@@ -46,7 +46,7 @@ public class RouletteController implements Initializable {
     private int numberLandedOn;
 
     @FXML
-    private Text fxMoneyText;
+    private Text fxMoneyText, fxWinText;
 
     @FXML
     private TextField fxTextField;
@@ -94,6 +94,7 @@ public class RouletteController implements Initializable {
         setIsRed();
         setHashMap();
         fxMoneyText.setText("" + Peningur.PENINGUR);
+        fxWinText.setVisible(false);
 
 
 
@@ -272,11 +273,25 @@ public class RouletteController implements Initializable {
         }
     }
 
-    public void winner() {
+    public void winner()  {
         System.out.println("Winner");
         Peningur.PENINGUR += 500;
         System.out.println(Peningur.PENINGUR);
         fxMoneyText.setText("" + Peningur.PENINGUR);
+        fxWinText.setVisible(true);
+
+        KeyFrame winnerKeyframe = new KeyFrame(Duration.millis(1000),
+                e -> {
+                    fxWinText.setVisible(true);
+                });
+
+        Timeline showTextTimeline = new Timeline(winnerKeyframe);
+
+        showTextTimeline.setCycleCount(1);
+        showTextTimeline.play();
+        showTextTimeline.setOnFinished(e -> {
+            fxWinText.setVisible(false);
+        });
     }
 
     public void loser() {
