@@ -249,7 +249,7 @@ public class NewBlackjackController implements Initializable {
 
     // ------------------------ Vinnsla -------------------------
 
-    public void leikurBuinn() throws InterruptedException {
+    public void leikurBuinn()  {
 
         int profitLoss = 0;
 
@@ -330,10 +330,11 @@ public class NewBlackjackController implements Initializable {
         for (int i = 0; i < 3; i++) {
             TextInputDialog textInputDialog = new TextInputDialog();
 
-            textInputDialog.setTitle("Veðmál");
+            textInputDialog.setTitle("Blackjack");
 
             textInputDialog.getDialogPane().setContentText("Veðmál");
             textInputDialog.setContentText("Settu inn upphæð veðmáls fyrir hönd " + (i+1));
+            textInputDialog.setHeaderText("Veðmál");
 
             Optional<String> result = textInputDialog.showAndWait();
 

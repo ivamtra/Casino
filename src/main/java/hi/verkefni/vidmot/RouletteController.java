@@ -126,13 +126,13 @@ public class RouletteController implements Initializable {
 
         Polygon triangle = new Polygon();
 
-        double initialX = 175.0;
+        double initialX = 178.0; // var 175
         double initialY = 24.0;
         double length = 10;
         triangle.getPoints().setAll(
                 initialX-length, initialY,
                 initialX+length, initialY,
-                initialX, initialY+length
+                initialX, initialY+20
         );
         triangle.setFill(Color.BLUE);
         fxPane.getChildren().add(triangle);
