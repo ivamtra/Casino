@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class NewBlackjackController implements Initializable {
@@ -157,6 +159,8 @@ public class NewBlackjackController implements Initializable {
         fxBets[0] = fxBet1;
         fxBets[1] = fxBet2;
         fxBets[2] = fxBet3;
+
+        nyttVedmalHandler();
 
         System.out.println(leikmennHbox[0]);
         System.out.println(fxLeikMadurHbox1);
@@ -320,5 +324,30 @@ public class NewBlackjackController implements Initializable {
         nyttSpilHandler();
         if (currentNumerLeikmanns == numerLeikmanns)
              komidNogHandler();
+    }
+
+    public void nyttVedmalHandler() {
+        for (int i = 0; i < 3; i++) {
+            TextInputDialog textInputDialog = new TextInputDialog();
+
+            textInputDialog.setTitle("Veðmál");
+
+            textInputDialog.getDialogPane().setContentText("Veðmál");
+            textInputDialog.setContentText("Settu inn upphæð veðmáls fyrir hönd " + (i+1));
+
+            Optional<String> result = textInputDialog.showAndWait();
+
+            if (result.isPresent()) {
+                System.out.println("nafnið er " + result.get());
+                fxBets[i].setText(result.get());
+            } else {
+                fxBets[i].setText(0 + "");
+                System.out.println("ekkert svar");
+            }
+            fxBets[i].setDisable(true);
+        }
+
+        nyrLeikurHandler();
+
     }
 }

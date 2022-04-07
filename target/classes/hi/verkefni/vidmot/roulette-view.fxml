@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="fxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: 663300;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.RouletteController">
+<Pane fx:id="fxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.RouletteController">
    <children>
       <ImageView fx:id="fxRouletteImage" fitHeight="300.0" fitWidth="500.0" layoutX="24.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
          <image>

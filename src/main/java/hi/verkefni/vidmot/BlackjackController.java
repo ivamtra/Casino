@@ -184,6 +184,9 @@ public class BlackjackController implements Initializable {
         fxNafnDealer.setText("Dealer samtala " + dealerSpilSynilegt.getVirdi());
     }
 
+
+
+
     /**
      * Initialize aðferð í controllernum.
      * Býr til Text-dialog sem tekur inn nafn leikmanns
