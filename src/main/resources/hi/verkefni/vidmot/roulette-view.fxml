@@ -20,7 +20,7 @@
       <VBox alignment="CENTER_LEFT" layoutX="533.0" layoutY="32.0" prefHeight="385.0" prefWidth="217.0" spacing="20.0">
          <children>
             <TextField fx:id="fxVedmal" maxWidth="70.0" prefHeight="25.0" prefWidth="115.0" promptText="Veðmál" />
-            <Button fx:id="fxSpinButton" mnemonicParsing="false" onAction="#spin" stylesheets="@stylesheet.css" text="Spin" />
+            <Button mnemonicParsing="false" onAction="#spin" text="Spin" />
             <Button mnemonicParsing="false" onAction="#betOnRed" text="Betta á rauðann" />
             <Button mnemonicParsing="false" onAction="#betOnBlack" text="Betta á svartan" />
             <Button mnemonicParsing="false" onAction="#betOnGreen" text="Betta á grænan" />

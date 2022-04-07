@@ -1,6 +1,6 @@
 package hi.verkefni.vidmot;
 
-import hi.verkefni.vinnnsla.Peningur;
+import hi.verkefni.vinnnsla.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static hi.verkefni.vinnnsla.RouletteVinnsla.*;
 
 public class RouletteController implements Initializable {
 
@@ -69,40 +71,7 @@ public class RouletteController implements Initializable {
 
 
 
-    public int spin() throws InterruptedException {
-        AtomicInteger x = new AtomicInteger();
 
-        try {
-            vedmal = Integer.parseInt(fxVedmal.getText());
-        }
-        catch (NumberFormatException ignored) {}
-
-
-        Peningur.PENINGUR -= vedmal;
-
-        fxMoneyText.setText("" + Peningur.PENINGUR);
-
-        // Horn eru í gráðum
-        double doubleInitialVelocity = Math.round((Math.random()*10.0 + 5)*100.0)/100.0;
-
-        //Math.round(x*100.0)/100.0 gefur 2 aukastafi
-
-        AtomicReference<Double> initialVelocity = new AtomicReference<>(doubleInitialVelocity); // gradur/sek
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(10),
-                e -> {
-                    fxRouletteImage.setRotate(fxRouletteImage.getRotate() + initialVelocity.get());
-                    initialVelocity.updateAndGet(v -> new Double((double) (v - 0.01)));
-                });
-
-        System.out.println(initialVelocity);
-
-        timeline = new Timeline(keyFrame);
-        timeline.setCycleCount((int) doubleInitialVelocity*100);
-        timeline.play();
-
-        //System.out.println(x);
-        return -100;
-    }
 
 
     //--------------------- Initializer --------------------------
@@ -110,8 +79,8 @@ public class RouletteController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Upphafsstillir isRed fylkið
-        setIsRed();
-        setHashMap();
+        isRed = RouletteVinnsla.setIsRed();
+        numberMap = RouletteVinnsla.setHashMap(numbers);
         fxMoneyText.setText("" + Peningur.PENINGUR);
         fxWinText.setVisible(false);
 
@@ -166,12 +135,12 @@ public class RouletteController implements Initializable {
 
         timeline.setOnFinished(e ->
                 {
-                    numberLandedOn = getnumber();
+                    numberLandedOn = getnumber(fxRouletteImage, numbers);
                     System.out.println(numberLandedOn);
 
                     // Rauður bettaður
                     if (isRed[numberMap.get(numberLandedOn)]) {
-                        winner();
+                        winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
                     }
                     else
                         loser();
@@ -184,7 +153,7 @@ public class RouletteController implements Initializable {
         spin();
 
         timeline.setOnFinished(e -> {
-            numberLandedOn = getnumber();
+            numberLandedOn = getnumber(fxRouletteImage, numbers);
 
             // Svartur bettaður
 
@@ -194,7 +163,7 @@ public class RouletteController implements Initializable {
                 if (numberLandedOn == -1  || numberLandedOn == 0)
                     loser();
                 else
-                    winner();
+                    winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             }
             else
                 loser();
@@ -208,9 +177,9 @@ public class RouletteController implements Initializable {
         vedmalScaler = 18;
         spin();
         timeline.setOnFinished(e -> {
-            numberLandedOn = getnumber();
+            numberLandedOn = getnumber(fxRouletteImage, numbers);
             if (numberLandedOn == -1 || numberLandedOn == 0) {
-                    winner();
+                winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
                 }
                 else
                     loser();
@@ -222,11 +191,11 @@ public class RouletteController implements Initializable {
         vedmalScaler = 2;
         spin();
         timeline.setOnFinished(e -> {
-            numberLandedOn = getnumber();
+            numberLandedOn = getnumber(fxRouletteImage, numbers);
 
 
             if (numberLandedOn % 2 == 1)
-                winner();
+                winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             else
                 loser();
             System.out.println(numberLandedOn);
@@ -238,13 +207,13 @@ public class RouletteController implements Initializable {
         vedmalScaler = 2;
         spin();
         timeline.setOnFinished(e -> {
-            numberLandedOn = getnumber();
+            numberLandedOn = getnumber(fxRouletteImage, numbers);
 
 
             if (numberLandedOn % 2 == 1)
                 loser();
             else
-                winner();
+                winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             System.out.println(numberLandedOn);
 
         });
@@ -255,15 +224,51 @@ public class RouletteController implements Initializable {
         spin();
 
         timeline.setOnFinished(e -> {
-            numberLandedOn = getnumber();
+            numberLandedOn = getnumber(fxRouletteImage, numbers);
             if (numberLandedOn == Integer.parseInt(fxTextField.getText()))
-                winner();
+                winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             else
                 loser();
             System.out.println(numberLandedOn);
 
         });
 
+    }
+
+    public int spin() throws InterruptedException {
+        // arguments vedmal, fxVedmal, fxMoneyText, fxRouletteImage, timeline
+
+        AtomicInteger x = new AtomicInteger();
+
+        try {
+            vedmal = Integer.parseInt(fxVedmal.getText());
+        }
+        catch (NumberFormatException ignored) {}
+
+        Peningur.PENINGUR -= vedmal;
+
+        fxMoneyText.setText("" + Peningur.PENINGUR);
+
+        // Horn eru í gráðum
+        double doubleInitialVelocity = Math.round((Math.random()*10.0 + 5)*100.0)/100.0;
+
+        //Math.round(x*100.0)/100.0 gefur 2 aukastafi
+
+        AtomicReference<Double> initialVelocity = new AtomicReference<>(doubleInitialVelocity); // gradur/sek
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(10),
+                e -> {
+                    fxRouletteImage.setRotate(fxRouletteImage.getRotate() + initialVelocity.get());
+                    initialVelocity.updateAndGet(v -> new Double((double) (v - 0.01)));
+                });
+
+        System.out.println(initialVelocity);
+
+        timeline = new Timeline(keyFrame);
+        timeline.setCycleCount((int) doubleInitialVelocity*100);
+        timeline.play();
+
+        //System.out.println(x);
+        return -100;
     }
     
 
@@ -275,51 +280,49 @@ public class RouletteController implements Initializable {
 
     //--------------- Vinnsluföll -----------------------------
 
-    // Hægt að bæta við isBlack(), isRed() o.s.frv.
+//    public void setIsRed() {
+//        isRed = new boolean[38];
+//        for (int i = 0; i < 38; i++) {
+//            if (i % 2 == 0) {
+//                isRed[i] = false;
+//            }
+//            else
+//                isRed[i] = true;
+//        }
+//        // Grænn
+//        isRed[19] = false;
+//    }
 
+//    public void setHashMap() {
+//        numberMap = new HashMap<>();
+//        for (int i = 0; i < 38; i++) {
+//            numberMap.put(numbers[i], i);
+//        }
+//    }
 
-    public void setIsRed() {
-        isRed = new boolean[38];
-        for (int i = 0; i < 38; i++) {
-            if (i % 2 == 0) {
-                isRed[i] = false;
-            }
-            else
-                isRed[i] = true;
-        }
-        // Grænn
-        isRed[19] = false;
-    }
-
-    public void setHashMap() {
-        numberMap = new HashMap<>();
-        for (int i = 0; i < 38; i++) {
-            numberMap.put(numbers[i], i);
-        }
-    }
-
-    public void winner()  {
-        System.out.println("Winner");
-        Peningur.PENINGUR += vedmal*vedmalScaler;
-        System.out.println(Peningur.PENINGUR);
-        fxMoneyText.setText("" + Peningur.PENINGUR);
-
-        fxWinText.setText("Þú vannst " + vedmal*vedmalScaler + "kr!");
-        fxWinText.setVisible(true);
-
-        KeyFrame winnerKeyframe = new KeyFrame(Duration.millis(2000),
-                e -> {
-                    fxWinText.setVisible(true);
-                });
-
-        Timeline showTextTimeline = new Timeline(winnerKeyframe);
-
-        showTextTimeline.setCycleCount(1);
-        showTextTimeline.play();
-        showTextTimeline.setOnFinished(e -> {
-            fxWinText.setVisible(false);
-        });
-    }
+//public void winner()  {
+//        // arguments, fxMoneyText, fxWinText, vedmal, vedmalScaler
+//        System.out.println("Winner");
+//        Peningur.PENINGUR += vedmal*vedmalScaler;
+//        System.out.println(Peningur.PENINGUR);
+//        fxMoneyText.setText("" + Peningur.PENINGUR);
+//
+//        fxWinText.setText("Þú vannst " + vedmal*vedmalScaler + "kr!");
+//        fxWinText.setVisible(true);
+//
+//        KeyFrame winnerKeyframe = new KeyFrame(Duration.millis(2000),
+//                e -> {
+//                    fxWinText.setVisible(true);
+//                });
+//
+//        Timeline showTextTimeline = new Timeline(winnerKeyframe);
+//
+//        showTextTimeline.setCycleCount(1);
+//        showTextTimeline.play();
+//        showTextTimeline.setOnFinished(e -> {
+// //           fxWinText.setVisible(false);
+//        });
+//    }
 
     public void loser() {
         System.out.println("Loser");
@@ -329,26 +332,29 @@ public class RouletteController implements Initializable {
     }
 
     // Gæti farið í vinnslu með fxRouletteImage sem argument
-    public int getnumber() {
-        double angle = fxRouletteImage.getRotate() % 360;
+    //public int getnumber() {
+// //       double angle = fxRouletteImage.getRotate() % 360;
+//
+//        double angleOfNumber = 360 - angle;
+//
+//        double offSet = -2.6;
+//        double step = 360/38.0; // Gradur sem hver tala tekur
+//
+//        int iterator = 0;
+//
+//        while(iterator*step - offSet < angleOfNumber) {
+//            iterator++;
+//        }
+//        try {
+//            return numbers[iterator];
+//        }
+// //       catch (ArrayIndexOutOfBoundsException e) {
+//            return  -1;
+//        }
+//    }
 
-        double angleOfNumber = 360 - angle;
 
-        double offSet = -2.6;
-        double step = 360/38.0; // Gradur sem hver tala tekur
 
-        int iterator = 0;
-
-        while(iterator*step - offSet < angleOfNumber) {
-            iterator++;
-        }
-        try {
-            return numbers[iterator];
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            return  -1;
-        }
-    }
 
 
 }
