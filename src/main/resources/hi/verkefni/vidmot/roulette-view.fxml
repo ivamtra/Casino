@@ -9,16 +9,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="fxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.RouletteController">
+<Pane fx:id="fxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #228B22 #228B22;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.RouletteController">
    <children>
       <ImageView fx:id="fxRouletteImage" fitHeight="300.0" fitWidth="500.0" layoutX="24.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@rulettuhjol.png" />
          </image>
       </ImageView>
-      <Text fx:id="fxMoneyText" layoutX="483.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFD700; -fx-font-size: 20;" text="Peningur" />
-      <VBox alignment="CENTER_LEFT" layoutX="605.0" layoutY="32.0" prefHeight="340.0" prefWidth="145.0" spacing="20.0">
+      <Text fx:id="fxMoneyText" layoutX="400.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFD700; -fx-font-size: 20;" text="Peningur" />
+      <VBox alignment="CENTER_LEFT" layoutX="533.0" layoutY="32.0" prefHeight="385.0" prefWidth="217.0" spacing="20.0">
          <children>
+            <TextField fx:id="fxVedmal" maxWidth="70.0" prefHeight="25.0" prefWidth="115.0" promptText="Veðmál" />
             <Button fx:id="fxSpinButton" mnemonicParsing="false" onAction="#spin" text="Spin" />
             <Button mnemonicParsing="false" onAction="#betOnRed" text="Betta á rauðann" />
             <Button mnemonicParsing="false" onAction="#betOnBlack" text="Betta á svartan" />
@@ -28,7 +29,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#betOnNumber" text="Betta á tölu" />
-                  <TextField fx:id="fxTextField" prefHeight="25.0" prefWidth="43.0" />
+                  <TextField fx:id="fxTextField" prefHeight="25.0" prefWidth="107.0" promptText="Tala 00-38" />
                </children>
             </HBox>
             <Button mnemonicParsing="false" onAction="#goBack" text="Til baka" />

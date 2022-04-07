@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -49,7 +50,15 @@ public class RouletteController implements Initializable {
     private Text fxMoneyText, fxWinText;
 
     @FXML
-    private TextField fxTextField;
+    private TextField fxTextField, fxVedmal;
+
+    @FXML
+    private ChoiceBox<String> fxChoiceBox;
+
+    private int vedmal;
+
+    private int vedmalScaler = 1;
+
 
     // -1 taknar 00
     // index 0 og 19 eru grænir
@@ -62,6 +71,16 @@ public class RouletteController implements Initializable {
 
     public int spin() throws InterruptedException {
         AtomicInteger x = new AtomicInteger();
+
+        try {
+            vedmal = Integer.parseInt(fxVedmal.getText());
+        }
+        catch (NumberFormatException ignored) {}
+
+
+        Peningur.PENINGUR -= vedmal;
+
+        fxMoneyText.setText("" + Peningur.PENINGUR);
 
         // Horn eru í gráðum
         double doubleInitialVelocity = Math.round((Math.random()*10.0 + 5)*100.0)/100.0;
@@ -142,6 +161,7 @@ public class RouletteController implements Initializable {
 
 
     public void betOnRed(ActionEvent event) throws InterruptedException {
+        vedmalScaler = 2;
         spin();
 
         timeline.setOnFinished(e ->
@@ -160,6 +180,7 @@ public class RouletteController implements Initializable {
     }
 
     public void betOnBlack(ActionEvent event) throws InterruptedException {
+        vedmalScaler = 2;
         spin();
 
         timeline.setOnFinished(e -> {
@@ -184,6 +205,7 @@ public class RouletteController implements Initializable {
     }
 
     public void betOnGreen(ActionEvent event) throws InterruptedException {
+        vedmalScaler = 18;
         spin();
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber();
@@ -197,6 +219,7 @@ public class RouletteController implements Initializable {
     }
 
     public void betOnOdds(ActionEvent event) throws InterruptedException {
+        vedmalScaler = 2;
         spin();
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber();
@@ -212,6 +235,7 @@ public class RouletteController implements Initializable {
     }
 
     public void betOnEvens(ActionEvent event) throws InterruptedException {
+        vedmalScaler = 2;
         spin();
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber();
@@ -227,6 +251,7 @@ public class RouletteController implements Initializable {
     }
 
     public void betOnNumber(ActionEvent event) throws InterruptedException {
+        vedmalScaler = 36;
         spin();
 
         timeline.setOnFinished(e -> {
@@ -275,12 +300,14 @@ public class RouletteController implements Initializable {
 
     public void winner()  {
         System.out.println("Winner");
-        Peningur.PENINGUR += 500;
+        Peningur.PENINGUR += vedmal*vedmalScaler;
         System.out.println(Peningur.PENINGUR);
         fxMoneyText.setText("" + Peningur.PENINGUR);
+
+        fxWinText.setText("Þú vannst " + vedmal*vedmalScaler + "kr!");
         fxWinText.setVisible(true);
 
-        KeyFrame winnerKeyframe = new KeyFrame(Duration.millis(1000),
+        KeyFrame winnerKeyframe = new KeyFrame(Duration.millis(2000),
                 e -> {
                     fxWinText.setVisible(true);
                 });
@@ -296,9 +323,9 @@ public class RouletteController implements Initializable {
 
     public void loser() {
         System.out.println("Loser");
-        Peningur.PENINGUR -= 500;
-        System.out.println(Peningur.PENINGUR);
-        fxMoneyText.setText("" + Peningur.PENINGUR);
+        //Peningur.PENINGUR -= vedmal;
+        //System.out.println(Peningur.PENINGUR);
+        //fxMoneyText.setText("" + Peningur.PENINGUR);
     }
 
     // Gæti farið í vinnslu með fxRouletteImage sem argument
