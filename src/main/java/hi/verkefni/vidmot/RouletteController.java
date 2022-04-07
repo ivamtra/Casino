@@ -121,7 +121,7 @@ public class RouletteController implements Initializable {
 
     @FXML
     public void goBack(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("newMainMenu-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -143,7 +143,7 @@ public class RouletteController implements Initializable {
                         winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
                     }
                     else
-                        loser();
+                        System.out.println("Loser");
                 }
         );
     }
@@ -161,12 +161,12 @@ public class RouletteController implements Initializable {
             if (!isRed[numberMap.get(numberLandedOn)]) {
                 // Grænn
                 if (numberLandedOn == -1  || numberLandedOn == 0)
-                    loser();
+                    System.out.println("Loser");
                 else
                     winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             }
             else
-                loser();
+                System.out.println("Loser");
 
             System.out.println(numberLandedOn);
 
@@ -182,7 +182,7 @@ public class RouletteController implements Initializable {
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
                 }
                 else
-                    loser();
+                     System.out.println("Loser");
                 System.out.println(numberLandedOn);
         });
     }
@@ -197,7 +197,7 @@ public class RouletteController implements Initializable {
             if (numberLandedOn % 2 == 1)
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             else
-                loser();
+                System.out.println("Loser");
             System.out.println(numberLandedOn);
 
         });
@@ -211,7 +211,7 @@ public class RouletteController implements Initializable {
 
 
             if (numberLandedOn % 2 == 1)
-                loser();
+                System.out.println("Loser");
             else
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             System.out.println(numberLandedOn);
@@ -223,12 +223,22 @@ public class RouletteController implements Initializable {
         vedmalScaler = 36;
         spin();
 
+
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber(fxRouletteImage, numbers);
-            if (numberLandedOn == Integer.parseInt(fxTextField.getText()))
+
+            int numberBetted;
+
+            // Jaðartilfelli þegar bettað er á 00 því það er geymt sem -1
+            if (fxTextField.getText().equals("00"))
+                numberBetted = -1;
+            else
+                numberBetted = Integer.parseInt(fxTextField.getText());
+
+            if (numberLandedOn == numberBetted)
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
             else
-                loser();
+                System.out.println("Loser");
             System.out.println(numberLandedOn);
 
         });
@@ -270,91 +280,8 @@ public class RouletteController implements Initializable {
         //System.out.println(x);
         return -100;
     }
-    
-
-
-
-
-
-
 
     //--------------- Vinnsluföll -----------------------------
-
-//    public void setIsRed() {
-//        isRed = new boolean[38];
-//        for (int i = 0; i < 38; i++) {
-//            if (i % 2 == 0) {
-//                isRed[i] = false;
-//            }
-//            else
-//                isRed[i] = true;
-//        }
-//        // Grænn
-//        isRed[19] = false;
-//    }
-
-//    public void setHashMap() {
-//        numberMap = new HashMap<>();
-//        for (int i = 0; i < 38; i++) {
-//            numberMap.put(numbers[i], i);
-//        }
-//    }
-
-//public void winner()  {
-//        // arguments, fxMoneyText, fxWinText, vedmal, vedmalScaler
-//        System.out.println("Winner");
-//        Peningur.PENINGUR += vedmal*vedmalScaler;
-//        System.out.println(Peningur.PENINGUR);
-//        fxMoneyText.setText("" + Peningur.PENINGUR);
-//
-//        fxWinText.setText("Þú vannst " + vedmal*vedmalScaler + "kr!");
-//        fxWinText.setVisible(true);
-//
-//        KeyFrame winnerKeyframe = new KeyFrame(Duration.millis(2000),
-//                e -> {
-//                    fxWinText.setVisible(true);
-//                });
-//
-//        Timeline showTextTimeline = new Timeline(winnerKeyframe);
-//
-//        showTextTimeline.setCycleCount(1);
-//        showTextTimeline.play();
-//        showTextTimeline.setOnFinished(e -> {
-// //           fxWinText.setVisible(false);
-//        });
-//    }
-
-    public void loser() {
-        System.out.println("Loser");
-        //Peningur.PENINGUR -= vedmal;
-        //System.out.println(Peningur.PENINGUR);
-        //fxMoneyText.setText("" + Peningur.PENINGUR);
-    }
-
-    // Gæti farið í vinnslu með fxRouletteImage sem argument
-    //public int getnumber() {
-// //       double angle = fxRouletteImage.getRotate() % 360;
-//
-//        double angleOfNumber = 360 - angle;
-//
-//        double offSet = -2.6;
-//        double step = 360/38.0; // Gradur sem hver tala tekur
-//
-//        int iterator = 0;
-//
-//        while(iterator*step - offSet < angleOfNumber) {
-//            iterator++;
-//        }
-//        try {
-//            return numbers[iterator];
-//        }
-// //       catch (ArrayIndexOutOfBoundsException e) {
-//            return  -1;
-//        }
-//    }
-
-
-
 
 
 }

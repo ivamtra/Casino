@@ -214,6 +214,7 @@ public class NewBlackjackController implements Initializable {
             //fxStandButton.setDisable(true);
 
         }
+
         if (leikmenn[numerLeikmanns].getFjoldiSpila() >= 5) {
             System.out.println("Of mörg spil");
             komidNogHandler();
@@ -261,7 +262,7 @@ public class NewBlackjackController implements Initializable {
     }
 
     public void goBackHandler(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("mainMenu-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("NewMainMenu-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
