@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="752.0" fitWidth="1084.0" layoutX="-114.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@R.jpg" />
+            <Image url="@rouletteBackground.jpg" />
          </image>
       </ImageView>
       <ImageView fx:id="fxRouletteImage" fitHeight="300.0" fitWidth="500.0" layoutX="24.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
