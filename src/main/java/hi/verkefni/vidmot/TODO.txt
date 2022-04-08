@@ -1,12 +1,3 @@
-Bæta við betting við rúlettu
+Stækka rúlettu
+documenta
 
-
-Bæta við margar hendur í blackjack
-Bæta við double í blackjack
-Bæta við betting í blackjack
-
-
-Bæta við eye candy við blackjack
-Bæta við eyecandy við rúlettu
-
-Bæta við styling á alla takka

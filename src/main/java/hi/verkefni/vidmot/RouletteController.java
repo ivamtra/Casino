@@ -246,6 +246,7 @@ public class RouletteController implements Initializable {
     }
 
     public int spin() throws InterruptedException {
+
         // arguments vedmal, fxVedmal, fxMoneyText, fxRouletteImage, timeline
 
         AtomicInteger x = new AtomicInteger();
