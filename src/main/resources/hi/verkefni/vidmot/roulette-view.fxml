@@ -11,6 +11,11 @@
 
 <Pane fx:id="fxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #228B22 #228B22;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.RouletteController">
    <children>
+      <ImageView fitHeight="752.0" fitWidth="1084.0" layoutX="-114.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@R.jpg" />
+         </image>
+      </ImageView>
       <ImageView fx:id="fxRouletteImage" fitHeight="300.0" fitWidth="500.0" layoutX="24.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@rulettuhjol-new-removebg-preview.png" />

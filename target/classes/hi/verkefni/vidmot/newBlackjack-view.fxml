@@ -11,6 +11,11 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #228B22;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.NewBlackjackController">
    <children>
+      <ImageView fitHeight="703.0" fitWidth="918.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@thinkstockphotos-622989362-100713229-large.jpg" />
+         </image>
+      </ImageView>
       <HBox fx:id="fxDealerHbox" layoutX="300.0" layoutY="51.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
       <HBox fx:id="fxLeikMadurHbox3" layoutX="586.0" layoutY="401.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
       <HBox fx:id="fxLeikMadurHbox2" layoutX="300.0" layoutY="401.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
