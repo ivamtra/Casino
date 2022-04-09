@@ -8,9 +8,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #4079BF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.MainMenuController">
    <children>
-      <ImageView fitHeight="631.0" fitWidth="1040.0" layoutX="-30.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="637.0" fitWidth="1112.0" layoutX="-271.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@R.jpg" />
+            <Image url="@6614b5564b7874dcfb2bed2a321821c1.jpeg" />
          </image>
       </ImageView>
       <HBox fx:id="fxHbox" alignment="TOP_CENTER" layoutX="145.0" layoutY="172.0" prefHeight="250.0" prefWidth="550.0" spacing="50.0">
