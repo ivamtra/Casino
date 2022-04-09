@@ -1,14 +1,12 @@
 package hi.verkefni.vidmot;
 
 import hi.verkefni.vinnnsla.Peningur;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -20,6 +18,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
+
+    /******************************************************************************
+     *  Nafn    : Ívan Már Þrastarson
+     *
+     *  T-póstur: imt1@hi.is
+     *
+     *
+     *  Lýsing  : Viðmótsklasi sem stjórnar öllu sem tengist aðalvalmyndinni.
+     *            Hér getur notandi valið hvaða leik hann vill spila.
+     *
+     *
+     *****************************************************************************/
 
     private Stage stage;
     private Scene scene;
@@ -35,19 +45,16 @@ public class MainMenuController implements Initializable {
     @FXML
     private ImageView fxBlackjackMenuIcon;
 
-    private HelloController helloController;
-
     @FXML
     private Text fxMoneyText;
 
-    @FXML
-    public void rouletteIconHandler() {
-
-    }
-
-
-
-    // Virkar
+    /**
+     * Handler fyrir þegar notandi vill spila blackjack.
+     * Notandinn ýtir á blackjack myndina og nýr leikur
+     * hefst.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void BlackjackIconHandler(MouseEvent event) throws IOException {
         System.out.println("Blackjack Icon clicked");
@@ -62,6 +69,12 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * Handler fyrir rúlettuvalmyndina. Notandi ýtir
+     * á rúlettumyndina og nýr rúlettuleikur hefst.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void rouletteIconHandler(MouseEvent event) throws IOException {
         System.out.println("Roulette Icon clicked");
@@ -73,6 +86,13 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Initializer fyrir aðalvalmyndina.
+     * Fallið uppfærir hversu mikinn pening notandinn
+     * hefur og birtir það neðst á skjánum.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println(Peningur.PENINGUR);

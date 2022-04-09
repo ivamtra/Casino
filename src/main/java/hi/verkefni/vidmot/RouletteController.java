@@ -31,9 +31,24 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static hi.verkefni.vinnnsla.RouletteVinnsla.*;
 
+/******************************************************************************
+ *  Nafn    : Ívan Már Þrastarson
+ *
+ *  T-póstur: imt1@hi.is
+ *
+ *
+ *  Lýsing  : Viðmótsklasi fyrir Rúlettu. Inniheldur handlera sem stjórna
+ *            veðmálum notandans. Notandi getur valið milli þess að veðja
+ *            á svartan, rauðan, grænan, oddatölu, slétta tölu eða valið
+ *            tölu sjálfur.
+ *
+ *
+ *****************************************************************************/
+
 public class RouletteController implements Initializable {
 
-    //TODO hægt að setja getNumber í sér klasa
+
+    //------------------ Tilviksbreytur ----------------------------
 
     @FXML
     private Button fxSpinButton;
@@ -76,6 +91,16 @@ public class RouletteController implements Initializable {
 
     //--------------------- Initializer --------------------------
 
+    /**
+     * Initializer fyrir rúlettu.
+     * Keyrir vinnsluföll sem upphafsstillir allar
+     * breytur. Upphafsstillir rúlettuhjólið
+     * þannig snúningur þess er handahófskenndur.
+     * Upphafsstillir einnig þríhyrninginn sem sýnir
+     * hvaða tölu maður lendir á
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Upphafsstillir isRed fylkið
@@ -84,11 +109,6 @@ public class RouletteController implements Initializable {
         fxMoneyText.setText("" + Peningur.PENINGUR);
         fxWinText.setVisible(false);
 
-
-
-        for (int i = 0; i < 38; i++) {
-            System.out.println(numberMap.get(i));
-        }
 
         fxRouletteImage.setRotate(Math.random()*360);
 
@@ -111,14 +131,13 @@ public class RouletteController implements Initializable {
 
 
 
-
-
-
-
-
-
     // ------------------------ Handlerar ---------------------------------
-
+    /**
+     * Handler sem skiptir yfir á
+     * aðalvalmynd þegar ýtt er á til baka takkann.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void goBack(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("newMainMenu-view.fxml"));
@@ -129,6 +148,14 @@ public class RouletteController implements Initializable {
     }
 
 
+    /**
+     * Leyfir notanda að veðja á að
+     * rúlettan lendi á rauðri tölu.
+     * Ef hún lendir á rauðri tölu tvöfaldar
+     * hann veðmálið sitt.
+     * @param event
+     * @throws InterruptedException
+     */
     public void betOnRed(ActionEvent event) throws InterruptedException {
         vedmalScaler = 2;
         spin();
@@ -148,6 +175,12 @@ public class RouletteController implements Initializable {
         );
     }
 
+    /**
+     * Leyfir notanda að veðja á svarta tölu.
+     * Notandi tvöfaldar veðmálið sitt ef hann vinnur.
+     * @param event
+     * @throws InterruptedException
+     */
     public void betOnBlack(ActionEvent event) throws InterruptedException {
         vedmalScaler = 2;
         spin();
@@ -173,6 +206,12 @@ public class RouletteController implements Initializable {
         });
     }
 
+    /**
+     * Leyfir notanda að veðja á græna tölu.
+     * Notandi 18-faldar veðmálið sitt ef hann vinnur.
+     * @param event
+     * @throws InterruptedException
+     */
     public void betOnGreen(ActionEvent event) throws InterruptedException {
         vedmalScaler = 18;
         spin();
@@ -187,6 +226,12 @@ public class RouletteController implements Initializable {
         });
     }
 
+    /**
+     * Leyfir notanda að veðja á oddatölu.
+     * Notandi tvöfaldar veðmálið sitt ef hann vinnur.
+     * @param event
+     * @throws InterruptedException
+     */
     public void betOnOdds(ActionEvent event) throws InterruptedException {
         vedmalScaler = 2;
         spin();
@@ -203,6 +248,12 @@ public class RouletteController implements Initializable {
         });
     }
 
+    /**
+     * Leyfir notanda að veðja á slétta tölu.
+     * Notandi tvöfaldar veðmálið sitt ef hann vinnur.
+     * @param event
+     * @throws InterruptedException
+     */
     public void betOnEvens(ActionEvent event) throws InterruptedException {
         vedmalScaler = 2;
         spin();
@@ -219,6 +270,13 @@ public class RouletteController implements Initializable {
         });
     }
 
+    /**
+     * Leyfir notanda að veðja á tölu af hans vali.
+     * Notandi 36-faldar veðmálið sitt
+     * ef hann vinnur.
+     * @param event
+     * @throws InterruptedException
+     */
     public void betOnNumber(ActionEvent event) throws InterruptedException {
         vedmalScaler = 36;
         spin();
@@ -245,9 +303,13 @@ public class RouletteController implements Initializable {
 
     }
 
-    public int spin() throws InterruptedException {
-
-        // arguments vedmal, fxVedmal, fxMoneyText, fxRouletteImage, timeline
+    /**
+     * Snýr rúlettuhjólið með hraða af
+     * handahófi og tekur inn veðmál notandans.
+     *
+     * @throws InterruptedException
+     */
+    public void spin() throws InterruptedException {
 
         AtomicInteger x = new AtomicInteger();
 
@@ -278,11 +340,6 @@ public class RouletteController implements Initializable {
         timeline.setCycleCount((int) doubleInitialVelocity*100);
         timeline.play();
 
-        //System.out.println(x);
-        return -100;
     }
-
-    //--------------- Vinnsluföll -----------------------------
-
 
 }

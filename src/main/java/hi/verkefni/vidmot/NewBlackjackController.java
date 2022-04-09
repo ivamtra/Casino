@@ -24,6 +24,19 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/******************************************************************************
+ *  Nafn    : Ívan Már Þrastarson
+ *
+ *  T-póstur: imt1@hi.is
+ *
+ *
+ *  Lýsing  : Viðmótsklasi fyrir Blackjack. Inniheldur handlera sem stjórna
+ *            veðmálum notandans. Hér hefur notandi þrjár hendur þar sem
+ *            hann getur "hittað", "standað" og "doublað".
+ *
+ *
+ *****************************************************************************/
+
 public class NewBlackjackController implements Initializable {
 
     // ------------------------ Tilviksbreytur ------------------------------
@@ -41,8 +54,7 @@ public class NewBlackjackController implements Initializable {
     // þannig ég nota þessa tilviksbreytu til að útfæra það.
     private SpilV dealerSpilFalid;
 
-    //@FXML
-    //private Text fxNafnDealer, fxNafnLeikmanns;
+
 
     @FXML
     private HBox fxLeikMadurHbox1, fxLeikMadurHbox2, fxLeikMadurHbox3, fxDealerHbox;
@@ -75,6 +87,12 @@ public class NewBlackjackController implements Initializable {
     // ------------------- Handlerar -------------------------------------
 
 
+    /**
+     * Upphafsstillir nýjan blackjack leik.
+     * Dealerinn fær eitt spil sem notandi fær að sjá.
+     * Notandinn hefur þrjár hendur og tvö spil á hverri hönd
+     * sem notandi getur veðjað á.
+     */
     @FXML
     public void nyrLeikurHandler() {
         fxWinText.setVisible(false);
@@ -122,36 +140,14 @@ public class NewBlackjackController implements Initializable {
         dealerVidmotsSpil.setSpil(dealerSpilSynilegt);
         fxDealerHbox.getChildren().add(dealerVidmotsSpil);
 
-        // Athuga þetta
-
-        // 21 í upphafi leiks
-        if(leikmadur3.getSamtals() == 21) {
-            //fxNafnLeikmanns.setText(leikmadur.getNafn() + " samtala " + leikmadur.getSamtals());
-            //fxNafnDealer.setText(leikmadur.getNafn() + " vann með Blackjack!");
-
-            System.out.println("Blackjack");
-
-            //fxHitButton.setDisable(true);
-            //fxStandButton.setDisable(true);
-            return;
-        }
-
-        //fxNafnLeikmanns.setText(leikmadur.getNafn() + " samtala " + leikmadur.getSamtals());
-        //fxNafnDealer.setText("Dealer samtala " + dealerSpilSynilegt.getVirdi());
     }
 
+
     /**
-     * Initialize aðferð í controllernum.
-     * Býr til Text-dialog sem tekur inn nafn leikmanns
-     * og upphafsstillir nýjan blackjack leik eftir
-     * að tekið er inn nafn.
-     *
-     *
-     * @param url
-     * @param resourceBundle
+     * Handler fyrir þegar leikmaður
+     * vill ekki fá fleiri spil. Leikmaður spilar
+     * þá næstu hönd ef hann á hana eftir.
      */
-
-
     @FXML
     public void komidNogHandler() {
         fxDoubleButton.setDisable(false);
@@ -180,6 +176,11 @@ public class NewBlackjackController implements Initializable {
         }
     }
 
+    /**
+     * Gefur leikmanni eitt nýtt spil.
+     * Ef hann fer yfir 21 springur höndin og
+     * hann þarf að spila næstu hönd ef hann á hana eftir.
+     */
     @FXML
     public void nyttSpilHandler() {
         hasHit[numerLeikmanns] = true;
@@ -194,9 +195,6 @@ public class NewBlackjackController implements Initializable {
         leikmennHbox[numerLeikmanns].getChildren().add(spil);
 
         if (leikmenn[numerLeikmanns].getSamtals() > 21) {
-            //Spil falidSpil = new Spil();
-            //falidSpil.setSpil(dealerSpilFalid);
-            //fxDealerHbox.getChildren().add(falidSpil);
 
             isBusted[numerLeikmanns] = true;
 
@@ -209,10 +207,6 @@ public class NewBlackjackController implements Initializable {
                 komidNogHandler();
             }
 
-            //fxNafnDealer.setText("Dealer vann með samtölu " + dealer.getSamtals());
-            //fxHitButton.setDisable(true);
-            //fxStandButton.setDisable(true);
-
         }
 
         if (leikmenn[numerLeikmanns].getFjoldiSpila() >= 5) {
@@ -221,10 +215,13 @@ public class NewBlackjackController implements Initializable {
             return;
         }
 
-        //fxNafnLeikmanns.setText(leikmadur.getNafn() + " samtala " +  leikmadur.getSamtals());
     }
 
 
+    /**
+     * Leyfir leikmanni að breyta veðmáli sínu
+     * og byrjar nýjan leik.
+     */
     public void nyttVedmalHandler() {
         for (int i = 0; i < 3; i++) {
             TextInputDialog textInputDialog = new TextInputDialog();
@@ -251,6 +248,13 @@ public class NewBlackjackController implements Initializable {
 
     }
 
+    /**
+     * Leyfir leikmanni að tvöfalda veðmálið sitt.
+     * Leikmaður fær eitt nýtt spil á höndina sína,
+     * veðmálið fyrir þá hönd tvöfaldast en hann getur ekki
+     * fengið nýtt spil fyrir þá hönd.
+     * @param event
+     */
     public void doubleHandler(ActionEvent event) {
         fxDoubleButton.setDisable(true);
         int currentNumerLeikmanns = numerLeikmanns;
@@ -261,6 +265,12 @@ public class NewBlackjackController implements Initializable {
             komidNogHandler();
     }
 
+    /**
+     * Handler sem skiptir yfir á
+     * aðalvalmynd þegar ýtt er á til baka takkann.
+     * @param event
+     * @throws IOException
+     */
     public void goBackHandler(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("NewMainMenu-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -272,9 +282,16 @@ public class NewBlackjackController implements Initializable {
 
     // ------------------------- Initializer --------------------------------
 
+
+    /**
+     * Initialize aðferð fyrir Blackjack.
+     * Upphafsstillir allar tilviksbreytur,
+     * tekur inn veðmál og byrjar nýjan leik.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
 
         fxCashText.setText("" + Peningur.PENINGUR);
         leikmennHbox[0] = fxLeikMadurHbox1;
@@ -287,18 +304,23 @@ public class NewBlackjackController implements Initializable {
 
         nyttVedmalHandler();
 
-        System.out.println(leikmennHbox[0]);
-        System.out.println(fxLeikMadurHbox1);
         nyrLeikurHandler();
     }
 
 
     // ------------------------ Vinnsla -------------------------
 
-    // Eina vinnslufallið fyrir utan þau sem eru byggð inn í Leikmaður
+    // Eina vinnslufallið fyrir utan þau sem eru byggð inn í Leikmaður klasanum.
     // Fallið notar margar global breytur þannig það tekur því ekki
-    // Að búa til sér klasa einungis fyrir þetta fall
+    // Að búa til sér klasa einungis fyrir þetta eina fall.
 
+
+    /**
+     * Fall sem keyrir í hvert skipti sem leikur klárast.
+     * Fallið athugar hvaða hendur vinna og
+     * sýnir skilaboð ef notandinn endar í
+     * hagnaði.
+     */
     public void leikurBuinn()  {
 
         int profitLoss = 0;
@@ -320,7 +342,7 @@ public class NewBlackjackController implements Initializable {
             System.out.println("hönd "+ i + " " + leikmenn[i].getSamtals());
         }
 
-        // Athuga hverjir sprengu
+        // Athuga hverjir sprungu
 
         for (int i = 0; i < 3; i++) {
             if(isBusted[i]) {

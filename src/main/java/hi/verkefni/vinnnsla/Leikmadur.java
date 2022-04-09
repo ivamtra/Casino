@@ -6,13 +6,16 @@ import hi.verkefni.vinnsla.Stokkur;
 
 /******************************************************************************
  *  Nafn    : Ívan Már Þrastarson
+ *
  *  T-póstur: imt1@hi.is
+ *
  *
  *  Lýsing  : Vinnsluklasi fyrir leikmann sem inniheldur allar aðferðir
  *            og tilviksbreytur sem leikmaður þarf fyrir Blackjack.
  *
  *
  *****************************************************************************/
+
 public class Leikmadur implements LeikmadurInterface {
 
     private int samtala;
