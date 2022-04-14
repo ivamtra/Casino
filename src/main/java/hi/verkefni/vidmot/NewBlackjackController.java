@@ -4,6 +4,8 @@ import hi.verkefni.vinnnsla.Leikmadur;
 import hi.verkefni.vinnnsla.Peningur;
 import hi.verkefni.vinnsla.SpilV;
 import hi.verkefni.vinnsla.Stokkur;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,11 +20,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static hi.verkefni.vinnnsla.BlackjackVinnsla.showText;
+import static hi.verkefni.vinnnsla.Peningur.checkIfLegalBettingNumber;
+import static hi.verkefni.vinnnsla.Peningur.illegalNumber;
 
 /******************************************************************************
  *  Nafn    : Ívan Már Þrastarson
@@ -67,7 +74,7 @@ public class NewBlackjackController implements Initializable {
     private Text[] fxHendur = new Text[3];
 
     @FXML
-    private Button fxHitButton, fxStandButton, fxDoubleButton;
+    private Button fxNyttVedmalButton, fxNyrLeikurButton, fxHitButton, fxStandButton, fxDoubleButton;
 
     @FXML
     private ImageView fxArrowImage;
@@ -87,6 +94,8 @@ public class NewBlackjackController implements Initializable {
 
     private boolean[] hasHit = new boolean[3];
 
+    private boolean[] hasDoubled = new boolean[3];
+
 
     // ------------------- Handlerar -------------------------------------
 
@@ -104,13 +113,29 @@ public class NewBlackjackController implements Initializable {
         fxDoubleButton.setDisable(false);
         fxStandButton.setDisable(false);
         fxHitButton.setDisable(false);
+        fxNyrLeikurButton.setDisable(true);
+        fxNyttVedmalButton.setDisable(true);
         numerLeikmanns = 2;
 
+        int totalBet = 0;
+
         for (int i = 0; i < 3; i++) {
+            if (hasDoubled[i]) {
+                fxBets[i].setText((Integer.parseInt(fxBets[i].getText())/2)+ "");
+            }
+
             leikmennHbox[i].getChildren().clear();
             isBusted[i] = false;
             hasHit[i] = false;
+            hasDoubled[i] = false;
+
+            totalBet += Integer.parseInt(fxBets[i].getText());
+            System.out.println(totalBet);
         }
+
+        System.out.println("í nýr leikur");
+        Peningur.PENINGUR -= totalBet;
+        fxCashText.setText("" + Peningur.PENINGUR);
 
 
         fxDealerHbox.getChildren().clear();
@@ -206,7 +231,13 @@ public class NewBlackjackController implements Initializable {
 
         if (leikmenn[numerLeikmanns].getSamtals() > 21) {
 
+
             isBusted[numerLeikmanns] = true;
+
+            fxWinText.setVisible(true);
+            showText(fxWinText, "Hönd " + (numerLeikmanns+1) + " sprungin");
+
+
 
             if (numerLeikmanns > 0) {
                 numerLeikmanns--;
@@ -232,7 +263,7 @@ public class NewBlackjackController implements Initializable {
      * Leyfir leikmanni að breyta veðmáli sínu
      * og byrjar nýjan leik.
      */
-    public void nyttVedmalHandler() {
+    public void nyttVedmalHandler() throws IOException {
         for (int i = 0; i < 3; i++) {
             TextInputDialog textInputDialog = new TextInputDialog();
 
@@ -246,9 +277,14 @@ public class NewBlackjackController implements Initializable {
 
             if (result.isPresent()) {
                 System.out.println("nafnið er " + result.get());
+                if(!checkIfLegalBettingNumber(result.get())) {
+                    illegalNumber();
+                    goBackHandler(null);
+                    return;
+                }
                 fxBets[i].setText(result.get());
             } else {
-                fxBets[i].setText(0 + "");
+                goBackHandler(null);
                 System.out.println("ekkert svar");
             }
             fxBets[i].setDisable(true);
@@ -267,11 +303,12 @@ public class NewBlackjackController implements Initializable {
      */
     public void doubleHandler(ActionEvent event) {
         fxDoubleButton.setDisable(true);
+        hasDoubled[numerLeikmanns] = true;
         int currentNumerLeikmanns = numerLeikmanns;
         fxBets[numerLeikmanns].setText("" + (2*Integer.parseInt(fxBets[numerLeikmanns].getText())));
 
         nyttSpilHandler();
-        if (currentNumerLeikmanns == numerLeikmanns)
+        if (currentNumerLeikmanns == numerLeikmanns) // Ef leikmaður sprengdi ekki
             komidNogHandler();
     }
 
@@ -320,9 +357,12 @@ public class NewBlackjackController implements Initializable {
         System.out.println(fxHond3);
 
 
-        nyttVedmalHandler();
+        try {
+            nyttVedmalHandler();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        nyrLeikurHandler();
     }
 
 
@@ -342,6 +382,10 @@ public class NewBlackjackController implements Initializable {
     public void leikurBuinn()  {
 
         int profitLoss = 0;
+
+        int totalWin = 0;
+
+        int totalLoss = 0;
 
         int dealerSumma = dealer.getSamtals();
 
@@ -365,13 +409,18 @@ public class NewBlackjackController implements Initializable {
         for (int i = 0; i < 3; i++) {
             if(isBusted[i]) {
                 profitLoss -= bets[i];
+                System.out.println("leikmadur " + (i+1) + " sprunginn");
             }
+            totalLoss -= bets[i];
         }
 
         if (dealerSumma > 21) {
             for (int i = 0; i < 3; i++) {
-                if (!isBusted[i])
-                  profitLoss += bets[i];
+                if (!isBusted[i]) {
+                    profitLoss += bets[i];
+                    totalWin += 2 * bets[i];
+                    System.out.println("Dealer yfir 21 og leikmaður " + (i + 1) + " ekki sprunginn");
+                }
             }
         }
         // Ef dealer og leikmaður hafa sömu samtölu er jafntefli, þ.e. leikmaður fær endurgreitt
@@ -380,24 +429,37 @@ public class NewBlackjackController implements Initializable {
                 if (!isBusted[i]) {
                     if (dealerSumma > leikmenn[i].getSamtals()) {
                         profitLoss -= bets[i];
+                        System.out.println("leikmadur " + (i+1) + " ekki sprunginn en dealer er yfir");
                     }
-                    else if (dealerSumma < leikmenn[i].getSamtals())
+                    else if (dealerSumma < leikmenn[i].getSamtals()) {
                         profitLoss += bets[i];
+                        totalWin += 2 * bets[i];
+                        System.out.println("leikmadur " + (i+1) + " yfir dealer og ekki sprunginn");
+                    }
                 }
             }
         }
-        System.out.println(profitLoss);
-        Peningur.PENINGUR += profitLoss;
+
+        System.out.println();
+
+
+        System.out.println("Hagnaður/tap " +  profitLoss);
+        System.out.println("Heildarvinningur " + totalWin);
+        System.out.println("Heildartap " + totalLoss);
+
+        Peningur.PENINGUR += totalWin;
         fxCashText.setText("" + Peningur.PENINGUR);
 
-        if (profitLoss > 0) {
-            fxWinText.setText("Þú vannst " + profitLoss + "kr!");
+        if (totalWin > 0) {
+            fxWinText.setText("Þú vannst " + totalWin + "kr!");
             fxWinText.setVisible(true);
         }
 
         fxStandButton.setDisable(true);
         fxHitButton.setDisable(true);
         fxDoubleButton.setDisable(true);
+        fxNyrLeikurButton.setDisable(false);
+        fxNyttVedmalButton.setDisable(false);
     }
 
 }

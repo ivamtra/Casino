@@ -27,7 +27,7 @@
       <VBox alignment="CENTER" layoutX="40.0" layoutY="35.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
          <children>
             <Button fx:id="fxNyrLeikurButton" mnemonicParsing="false" onAction="#nyrLeikurHandler" text="Nýr Leikur" />
-            <Button mnemonicParsing="false" onAction="#nyttVedmalHandler" text="Nýtt veðmál" />
+            <Button fx:id="fxNyttVedmalButton" mnemonicParsing="false" onAction="#nyttVedmalHandler" text="Nýtt veðmál" />
             <Button fx:id="fxHitButton" mnemonicParsing="false" onAction="#nyttSpilHandler" text="Hit" />
             <Button fx:id="fxStandButton" mnemonicParsing="false" onAction="#komidNogHandler" text="Stand" />
             <Button fx:id="fxDoubleButton" mnemonicParsing="false" onAction="#doubleHandler" text="Double" />

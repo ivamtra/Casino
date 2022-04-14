@@ -1,5 +1,6 @@
 package hi.verkefni.vinnnsla;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 /******************************************************************************
@@ -17,15 +18,21 @@ import javafx.scene.control.TextField;
 public class Peningur {
     public static int PENINGUR;
 
-    public static boolean checkIfLegalBettingNumber(TextField fxTextField) {
-        boolean isLegal = true;
+    public static boolean checkIfLegalBettingNumber(String s) {
         int number;
         try {
-            number = Integer.parseInt(fxTextField.getText());
+            number = Integer.parseInt(s);
         }
         catch (NumberFormatException e) {
             return false;
         }
         return number >= 0;
+    }
+    public static void illegalNumber() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Casino");
+        alert.setHeaderText("Ólöglegt veðmál");
+        alert.setContentText("Vinsamlegast settu inn löglegt veðmál");
+        alert.show();
     }
 }

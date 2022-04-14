@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static hi.verkefni.vinnnsla.Peningur.*;
 import static hi.verkefni.vinnnsla.RouletteVinnsla.*;
 
 /******************************************************************************
@@ -321,6 +322,11 @@ public class RouletteController implements Initializable {
      * @throws InterruptedException
      */
     public void spin() throws InterruptedException {
+
+        if (!checkIfLegalBettingNumber(fxVedmal.getText())) {
+            illegalNumber();
+            return;
+        }
 
         AtomicInteger x = new AtomicInteger();
 
