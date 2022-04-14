@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jlink" name="Casino">
+    <output-path>$PROJECT_DIR$/out/artifacts/Casino</output-path>
+    <properties id="jlink-properties">
+      <options>
+        <option name="compressionLevel" value="2" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="artifact" artifact-name="Casino2:jar" />
+    </root>
+  </artifact>
+</component>

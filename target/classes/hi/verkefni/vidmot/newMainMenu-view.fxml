@@ -38,5 +38,7 @@
       <Text fx:id="fxMoneyText" layoutX="384.0" layoutY="515.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFFFFF; -fx-font-size: 30;" text="Cash" />
       <Text layoutX="330.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFFFFF; -fx-font-size: 50; -fx-font-weight: Bold;" text="Casino" />
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <Text layoutX="200.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFFFFF; -fx-font-size: 30;" text="Roulette" />
+      <Text layoutX="489.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFFFFF; -fx-font-size: 30;" text="Blackjack" />
    </children>
 </Pane>

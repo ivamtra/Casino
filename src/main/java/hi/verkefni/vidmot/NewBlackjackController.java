@@ -63,6 +63,10 @@ public class NewBlackjackController implements Initializable {
     private HBox[] leikmennHbox = new HBox[3];
 
     @FXML
+    private Text fxHond1, fxHond2, fxHond3, fxHondDealers;
+    private Text[] fxHendur = new Text[3];
+
+    @FXML
     private Button fxHitButton, fxStandButton, fxDoubleButton;
 
     @FXML
@@ -128,13 +132,17 @@ public class NewBlackjackController implements Initializable {
                 vidmotsSpil.setSpil(leikMadurSpil);
                 leikmennHbox[j].getChildren().add(vidmotsSpil);
             }
+            fxHendur[j].setText("" + leikmenn[j].getSamtals());
         }
+
+        SpilV dealerSpilSynilegt = stokkur.dragaSpil();
+        dealer.gefaSpil(dealerSpilSynilegt);
+        fxHondDealers.setText("" + dealer.getSamtals());
 
         dealerSpilFalid = stokkur.dragaSpil();
         dealer.gefaSpil(dealerSpilFalid);
 
-        SpilV dealerSpilSynilegt = stokkur.dragaSpil();
-        dealer.gefaSpil(dealerSpilSynilegt);
+
 
         Spil dealerVidmotsSpil = new Spil();
         dealerVidmotsSpil.setSpil(dealerSpilSynilegt);
@@ -170,6 +178,7 @@ public class NewBlackjackController implements Initializable {
                 fxDealerHbox.getChildren().add(synilegtSpil);
 
             }
+            fxHondDealers.setText(dealer.getSamtals() + "");
             leikurBuinn();
 
 
@@ -193,6 +202,7 @@ public class NewBlackjackController implements Initializable {
         Spil spil = new Spil();
         spil.setSpil(s);
         leikmennHbox[numerLeikmanns].getChildren().add(spil);
+        fxHendur[numerLeikmanns].setText("" + leikmenn[numerLeikmanns].getSamtals());
 
         if (leikmenn[numerLeikmanns].getSamtals() > 21) {
 
@@ -301,6 +311,14 @@ public class NewBlackjackController implements Initializable {
         fxBets[0] = fxBet1;
         fxBets[1] = fxBet2;
         fxBets[2] = fxBet3;
+
+        fxHendur[0] = fxHond1;
+        fxHendur[1] = fxHond2;
+        fxHendur[2] = fxHond3;
+
+        System.out.println(fxHendur[2]);
+        System.out.println(fxHond3);
+
 
         nyttVedmalHandler();
 

@@ -2,6 +2,8 @@ package hi.verkefni.vinnnsla;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -118,6 +120,18 @@ public class RouletteVinnsla {
         catch (ArrayIndexOutOfBoundsException e) {
             return  -1;
         }
+    }
+
+    public static boolean  checkIfLegalRouletteNumber(TextField fxTextField) {
+        int i;
+        try {
+            i = Integer.parseInt(fxTextField.getText());
+        } catch (NumberFormatException e) {
+            System.out.println("ekki tala");
+            return false;
+        }
+        boolean isLegalNumber = i <= 38 && i >= 0;
+        return isLegalNumber;
     }
 
 
