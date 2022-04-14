@@ -25,15 +25,14 @@
       <VBox alignment="CENTER_LEFT" layoutX="533.0" layoutY="32.0" prefHeight="385.0" prefWidth="217.0" spacing="20.0">
          <children>
             <TextField fx:id="fxVedmal" maxWidth="70.0" prefHeight="25.0" prefWidth="115.0" promptText="Veðmál" />
-            <Button mnemonicParsing="false" onAction="#spin" text="Spin" />
-            <Button mnemonicParsing="false" onAction="#betOnRed" text="Betta á rauðann" />
-            <Button mnemonicParsing="false" onAction="#betOnBlack" text="Betta á svartan" />
-            <Button mnemonicParsing="false" onAction="#betOnGreen" text="Betta á grænan" />
-            <Button mnemonicParsing="false" onAction="#betOnOdds" text="Betta á odda" />
-            <Button mnemonicParsing="false" onAction="#betOnEvens" text="Betta á slettar" />
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <Button mnemonicParsing="false" onAction="#betOnRed" text="Veðja á rauðan" />
+            <Button mnemonicParsing="false" onAction="#betOnBlack" text="Veðja á svartan" />
+            <Button mnemonicParsing="false" onAction="#betOnGreen" text="Veðja á grænan" />
+            <Button mnemonicParsing="false" onAction="#betOnOdds" text="Veðja á oddatölu" />
+            <Button mnemonicParsing="false" onAction="#betOnEvens" text="Veðja á slétta tölu" />
+            <HBox prefHeight="40.0" prefWidth="217.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#betOnNumber" text="Betta á tölu" />
+                  <Button mnemonicParsing="false" onAction="#betOnNumber" text="Veðja á tölu" />
                   <TextField fx:id="fxTextField" prefHeight="25.0" prefWidth="107.0" promptText="Tala 00-38" />
                </children>
             </HBox>

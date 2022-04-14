@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.LeidbeiningarController">
+   <children>
+      <ImageView fitHeight="637.0" fitWidth="1112.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@6614b5564b7874dcfb2bed2a321821c1.jpeg" />
+         </image>
+      </ImageView>
+      <ScrollPane fx:id="fxScrollPane" layoutX="21.0" layoutY="22.0" prefHeight="554.0" prefWidth="630.0">
+         <content>
+            <Label fx:id="fxLabel" text="Label" />
+         </content>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </ScrollPane>
+      <Button fx:id="fxGoBackButton" layoutX="689.0" layoutY="46.0" mnemonicParsing="false" onAction="#goBack" text="Til Baka" />
+   </children>
+</Pane>

@@ -1,12 +1,14 @@
 package hi.verkefni.vidmot;
 
 import hi.verkefni.vinnnsla.Peningur;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -47,6 +49,9 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private Text fxMoneyText;
+
+    @FXML
+    private Button fxLeidbeingaButton;
 
     /**
      * Handler fyrir þegar notandi vill spila blackjack.
@@ -99,4 +104,23 @@ public class MainMenuController implements Initializable {
         fxMoneyText.setText("" + Peningur.PENINGUR);
     }
 
+    public void leidbeiningarHandler(ActionEvent event) throws IOException {
+        System.out.println("Leiðbeiningatakki ýttur");
+
+        root = FXMLLoader.load(getClass().getResource("leidbeininga-view.fxml"));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void leidbeingarHover(MouseEvent mouseEvent) {
+        System.out.println("Hoverað yfir");
+        fxLeidbeingaButton.setStyle("-fx-background-color: #d3d3d3");
+
+    }
+
+    public void paneHovered(MouseEvent mouseEvent) {
+        fxLeidbeingaButton.setStyle("-fx-background-color: #ffffff");
+    }
 }
