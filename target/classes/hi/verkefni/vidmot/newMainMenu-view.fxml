@@ -45,5 +45,7 @@
             <Font name="Symbol" size="15.0" />
          </font>
       </Button>
+      <Text fx:id="fxMoneyText1" layoutX="211.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFFFFF; -fx-font-size: 30;" text="Roulette" />
+      <Text fx:id="fxMoneyText11" layoutX="507.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Lucida Console&quot;; -fx-fill: FFFFFF; -fx-font-size: 30;" text="Blackjack" />
    </children>
 </Pane>
