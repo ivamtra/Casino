@@ -6,6 +6,7 @@ import hi.verkefni.vinnsla.SpilV;
 import hi.verkefni.vinnsla.Stokkur;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -24,6 +23,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -79,7 +79,7 @@ public class NewBlackjackController implements Initializable {
     @FXML
     private ImageView fxArrowImage;
 
-    private int numerLeikmanns = 2;
+    private int numerLeikmanns = 2; // Indexið á númer leikmanns
 
     @FXML
     private Text fxCashText, fxWinText;
@@ -95,6 +95,10 @@ public class NewBlackjackController implements Initializable {
     private boolean[] hasHit = new boolean[3];
 
     private boolean[] hasDoubled = new boolean[3];
+
+    private int fjoldiHanda;
+
+    private boolean fraNyjuVedmali;
 
 
     // ------------------- Handlerar -------------------------------------
@@ -115,23 +119,36 @@ public class NewBlackjackController implements Initializable {
         fxHitButton.setDisable(false);
         fxNyrLeikurButton.setDisable(true);
         fxNyttVedmalButton.setDisable(true);
-        numerLeikmanns = 2;
+        numerLeikmanns = fjoldiHanda-1;
+        fxArrowImage.setX(-(2-(numerLeikmanns))*288);
 
         int totalBet = 0;
 
         for (int i = 0; i < 3; i++) {
-            if (hasDoubled[i]) {
-                fxBets[i].setText((Integer.parseInt(fxBets[i].getText())/2)+ "");
-            }
-
             leikmennHbox[i].getChildren().clear();
             isBusted[i] = false;
             hasHit[i] = false;
+            fxHendur[i].setText("");
+        }
+
+
+        for (int i = 0; i < 3; i++) {
+            if (hasDoubled[i] && !fraNyjuVedmali) {
+                fxBets[i].setText((Integer.parseInt(fxBets[i].getText())/2)+ "");
+            }
             hasDoubled[i] = false;
 
-            totalBet += Integer.parseInt(fxBets[i].getText());
+
+            try {
+                totalBet += Integer.parseInt(fxBets[i].getText());
+            }
+            catch (NumberFormatException ignored) {
+
+            }
             System.out.println(totalBet);
         }
+
+        fraNyjuVedmali = false;
 
         System.out.println("í nýr leikur");
         Peningur.PENINGUR -= totalBet;
@@ -144,11 +161,11 @@ public class NewBlackjackController implements Initializable {
         dealer.nyrLeikur();
 
 
-        for (int i = 0; i < 3; i++) {
-            leikmenn[i].nyrLeikur();
+        for (Leikmadur l : leikmenn) {
+            l.nyrLeikur();
         }
 
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < fjoldiHanda; j++) {
 
             for (int i = 0; i < 2; i++) {
                 SpilV leikMadurSpil = stokkur.dragaSpil();
@@ -166,8 +183,6 @@ public class NewBlackjackController implements Initializable {
 
         dealerSpilFalid = stokkur.dragaSpil();
         dealer.gefaSpil(dealerSpilFalid);
-
-
 
         Spil dealerVidmotsSpil = new Spil();
         dealerVidmotsSpil.setSpil(dealerSpilSynilegt);
@@ -205,8 +220,6 @@ public class NewBlackjackController implements Initializable {
             }
             fxHondDealers.setText(dealer.getSamtals() + "");
             leikurBuinn();
-
-
         }
     }
 
@@ -237,8 +250,6 @@ public class NewBlackjackController implements Initializable {
             fxWinText.setVisible(true);
             showText(fxWinText, "Hönd " + (numerLeikmanns+1) + " sprungin");
 
-
-
             if (numerLeikmanns > 0) {
                 numerLeikmanns--;
                 fxArrowImage.setX(-288 * (2 - numerLeikmanns));
@@ -264,14 +275,36 @@ public class NewBlackjackController implements Initializable {
      * og byrjar nýjan leik.
      */
     public void nyttVedmalHandler() throws IOException {
+        fraNyjuVedmali = true;
+
         for (int i = 0; i < 3; i++) {
+            fxBets[i].setText("");
+        }
+
+
+
+
+
+        System.out.println(fxHendur[2]);
+        System.out.println(fxHond3);
+
+        for (int i = 0; i < 3; i++) {
+
+            ButtonType cancel = new ButtonType("Hætta við", ButtonBar.ButtonData.CANCEL_CLOSE);
+
             TextInputDialog textInputDialog = new TextInputDialog();
+
 
             textInputDialog.setTitle("Blackjack");
 
             textInputDialog.getDialogPane().setContentText("Veðmál");
             textInputDialog.setContentText("Settu inn upphæð veðmáls fyrir hönd " + (i+1));
             textInputDialog.setHeaderText("Veðmál");
+
+            if (i > 0) {
+                cancel = new ButtonType("Ekki fleiri hendur", ButtonBar.ButtonData.CANCEL_CLOSE);
+            }
+            textInputDialog.getDialogPane().getButtonTypes().set(1,cancel);
 
             Optional<String> result = textInputDialog.showAndWait();
 
@@ -283,11 +316,17 @@ public class NewBlackjackController implements Initializable {
                     return;
                 }
                 fxBets[i].setText(result.get());
+                fjoldiHanda = i+1;
             } else {
-                goBackHandler(null);
-                System.out.println("ekkert svar");
+                if (i == 0) {
+                    goBackHandler(null);
+                    System.out.println("ekkert svar");
+                }
+                else {
+                    System.out.println(fjoldiHanda);
+                    break;
+                }
             }
-            fxBets[i].setDisable(true);
         }
 
         nyrLeikurHandler();
@@ -341,6 +380,7 @@ public class NewBlackjackController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         fxCashText.setText("" + Peningur.PENINGUR);
+
         leikmennHbox[0] = fxLeikMadurHbox1;
         leikmennHbox[1] = fxLeikMadurHbox2;
         leikmennHbox[2] = fxLeikMadurHbox3;
@@ -353,8 +393,10 @@ public class NewBlackjackController implements Initializable {
         fxHendur[1] = fxHond2;
         fxHendur[2] = fxHond3;
 
-        System.out.println(fxHendur[2]);
-        System.out.println(fxHond3);
+        for (int i = 0; i < 3; i++) {
+            fxBets[i].setText("");
+            fxBets[i].setDisable(true);
+        }
 
 
         try {
@@ -368,9 +410,9 @@ public class NewBlackjackController implements Initializable {
 
     // ------------------------ Vinnsla -------------------------
 
-    // Eina vinnslufallið fyrir utan þau sem eru byggð inn í Leikmaður klasanum.
-    // Fallið notar margar global breytur þannig það tekur því ekki
-    // Að búa til sér klasa einungis fyrir þetta eina fall.
+    // Eina vinnslufallið í þessum klasa.
+    // Fallið notar margar global breytur og því óæskilegt
+    // að búa til sér fall í vinnsluklasa með mörgum parametrum.
 
 
     /**
@@ -435,6 +477,10 @@ public class NewBlackjackController implements Initializable {
                         profitLoss += bets[i];
                         totalWin += 2 * bets[i];
                         System.out.println("leikmadur " + (i+1) + " yfir dealer og ekki sprunginn");
+                    }
+                    else {
+                        totalWin += bets[i];
+                        System.out.println("leikmaður " + (i+1) + " hefur jafn mikið og dealer");
                     }
                 }
             }
