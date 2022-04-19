@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Objects;
 
 
 /******************************************************************************
@@ -74,7 +75,7 @@ public class Spil extends AnchorPane {
         efriTegund.setText(gildiString);
         nedriTegund.setText(gildiString);
         String imageNafn = tegundString + ".png";
-        Image mynd = new Image(Spil.class.getResourceAsStream(imageNafn));
+        Image mynd = new Image(Objects.requireNonNull(Spil.class.getResourceAsStream(imageNafn)));
         efriMynd.setImage(mynd);
         nedriMynd.setImage(mynd);
 
