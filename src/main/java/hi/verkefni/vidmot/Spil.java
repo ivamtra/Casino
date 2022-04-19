@@ -30,7 +30,7 @@ public class Spil extends AnchorPane {
     @FXML
     private Text efriTegund, nedriTegund;
 
-    private String[] myndir = {"hjarta", "spadi", "tigull", "lauf"};
+    private final String[] myndir = {"hjarta", "spadi", "tigull", "lauf"};
 
 
     /**
@@ -58,7 +58,7 @@ public class Spil extends AnchorPane {
      * Tekur inn upplýsingar úr vinnsluspilinu spil
      * og gefur viðmótsspilinu gildi og tegund þess spils.
      *
-     * @param spil
+     * @param spil vinnsluspil sem lesa á af
      */
     public void setSpil(SpilV spil) {
         Gildi gildi = spil.getGildi();

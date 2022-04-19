@@ -86,13 +86,6 @@ public class RouletteController implements Initializable {
     private HashMap<Integer, Integer> numberMap;
 
 
-
-
-
-
-
-
-
     //--------------------- Initializer --------------------------
 
     /**
@@ -139,7 +132,7 @@ public class RouletteController implements Initializable {
     /**
      * Handler sem skiptir yfir á
      * aðalvalmynd þegar ýtt er á til baka takkann.
-     * @param event
+     * @param event atburður til að komast aftur á aðalvalmynd
      * @throws IOException
      */
     @FXML
@@ -157,24 +150,20 @@ public class RouletteController implements Initializable {
      * rúlettan lendi á rauðri tölu.
      * Ef hún lendir á rauðri tölu tvöfaldar
      * hann veðmálið sitt.
-     * @param event
-     * @throws InterruptedException
+     *
      */
-    public void betOnRed(ActionEvent event) throws InterruptedException {
+    public void betOnRed() {
         vedmalScaler = 2;
         spin();
 
         timeline.setOnFinished(e ->
                 {
                     numberLandedOn = getnumber(fxRouletteImage, numbers);
-                    System.out.println(numberLandedOn);
 
                     // Rauður bettaður
                     if (isRed[numberMap.get(numberLandedOn)]) {
                         winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
                     }
-                    else
-                        System.out.println("Loser");
                 }
         );
     }
@@ -182,41 +171,24 @@ public class RouletteController implements Initializable {
     /**
      * Leyfir notanda að veðja á svarta tölu.
      * Notandi tvöfaldar veðmálið sitt ef hann vinnur.
-     * @param event
-     * @throws InterruptedException
      */
-    public void betOnBlack(ActionEvent event) throws InterruptedException {
+    public void betOnBlack() {
         vedmalScaler = 2;
         spin();
 
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber(fxRouletteImage, numbers);
-
-            // Svartur bettaður
-
-            // Ekki rauður
-            if (!isRed[numberMap.get(numberLandedOn)]) {
-                // Grænn
-                if (numberLandedOn == -1  || numberLandedOn == 0)
-                    System.out.println("Loser");
-                else
-                    winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
+            if (!isRed[numberMap.get(numberLandedOn)] && numberLandedOn != -1 && numberLandedOn != 0) {
+                winner(fxMoneyText,fxWinText,vedmal,vedmalScaler);
             }
-            else
-                System.out.println("Loser");
-
-            System.out.println(numberLandedOn);
-
         });
     }
 
     /**
      * Leyfir notanda að veðja á græna tölu.
      * Notandi 18-faldar veðmálið sitt ef hann vinnur.
-     * @param event
-     * @throws InterruptedException
      */
-    public void betOnGreen(ActionEvent event) throws InterruptedException {
+    public void betOnGreen() {
         vedmalScaler = 18;
         spin();
         timeline.setOnFinished(e -> {
@@ -224,53 +196,34 @@ public class RouletteController implements Initializable {
             if (numberLandedOn == -1 || numberLandedOn == 0) {
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
                 }
-                else
-                     System.out.println("Loser");
-                System.out.println(numberLandedOn);
         });
     }
 
     /**
      * Leyfir notanda að veðja á oddatölu.
      * Notandi tvöfaldar veðmálið sitt ef hann vinnur.
-     * @param event
-     * @throws InterruptedException
      */
-    public void betOnOdds(ActionEvent event) throws InterruptedException {
+    public void betOnOdds()  {
         vedmalScaler = 2;
         spin();
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber(fxRouletteImage, numbers);
-
-
             if (numberLandedOn % 2 == 1)
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
-            else
-                System.out.println("Loser");
-            System.out.println(numberLandedOn);
-
         });
     }
 
     /**
      * Leyfir notanda að veðja á slétta tölu.
      * Notandi tvöfaldar veðmálið sitt ef hann vinnur.
-     * @param event
-     * @throws InterruptedException
      */
-    public void betOnEvens(ActionEvent event) throws InterruptedException {
+    public void betOnEvens()  {
         vedmalScaler = 2;
         spin();
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber(fxRouletteImage, numbers);
-
-
-            if (numberLandedOn % 2 == 1)
-                System.out.println("Loser");
-            else
+            if (numberLandedOn % 2 == 0)
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
-            System.out.println(numberLandedOn);
-
         });
     }
 
@@ -278,10 +231,8 @@ public class RouletteController implements Initializable {
      * Leyfir notanda að veðja á tölu af hans vali.
      * Notandi 36-faldar veðmálið sitt
      * ef hann vinnur.
-     * @param event
-     * @throws InterruptedException
      */
-    public void betOnNumber(ActionEvent event) throws InterruptedException {
+    public void betOnNumber()  {
         if (!checkIfLegalRouletteNumber(fxTextField)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Roulette");
@@ -292,7 +243,6 @@ public class RouletteController implements Initializable {
         }
         vedmalScaler = 36;
         spin();
-
 
         timeline.setOnFinished(e -> {
             numberLandedOn = getnumber(fxRouletteImage, numbers);
@@ -307,9 +257,6 @@ public class RouletteController implements Initializable {
 
             if (numberLandedOn == numberBetted)
                 winner(fxMoneyText, fxWinText, vedmal, vedmalScaler);
-            else
-                System.out.println("Loser");
-            System.out.println(numberLandedOn);
 
         });
 
@@ -319,9 +266,8 @@ public class RouletteController implements Initializable {
      * Snýr rúlettuhjólið með hraða af
      * handahófi og tekur inn veðmál notandans.
      *
-     * @throws InterruptedException
      */
-    public void spin() throws InterruptedException {
+    public void spin() {
 
         if (!checkIfLegalBettingNumber(fxVedmal.getText())) {
             illegalNumber();
@@ -350,8 +296,6 @@ public class RouletteController implements Initializable {
                     fxRouletteImage.setRotate(fxRouletteImage.getRotate() + initialVelocity.get());
                     initialVelocity.updateAndGet(v -> new Double((double) (v - 0.01)));
                 });
-
-        System.out.println(initialVelocity);
 
         timeline = new Timeline(keyFrame);
         timeline.setCycleCount((int) doubleInitialVelocity*100);

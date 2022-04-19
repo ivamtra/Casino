@@ -35,11 +35,7 @@ public class RouletteVinnsla {
     public static boolean[] setIsRed() {
         boolean[] isRed = new boolean[38];
         for (int i = 0; i < 38; i++) {
-            if (i % 2 == 0) {
-                isRed[i] = false;
-            }
-            else
-                isRed[i] = true;
+            isRed[i] = i % 2 != 0;
         }
         // Grænn
         isRed[19] = false;
@@ -49,7 +45,7 @@ public class RouletteVinnsla {
     /**
      * Upphafsstillir hakkatöflu sem samsvarar
      * numbers fylkinu í RouletteController.
-     * @param numbers
+     * @param numbers fylki af rúlettutölum
      * @return numberMap hakkataflan.
      */
     public static HashMap<Integer, Integer> setHashMap(int[] numbers) {
@@ -65,16 +61,14 @@ public class RouletteVinnsla {
      * Global breytan PENINGUR hækkar eftir veðmáli
      * leikmanns og það birtast skilaboð sem tilkynna
      * notanda að hann hafi unnið.
-     * @param fxMoneyText
-     * @param fxWinText
-     * @param vedmal
-     * @param vedmalScaler
+     * @param fxMoneyText textinn sem sýnir upphæð penings.
+     * @param fxWinText textinn sem birtist þegar maður vinnur.
+     * @param vedmal upphæð veðmáls
+     * @param vedmalScaler hversu mikið veðmálið margfaldast með þegar maður vinnur.
      */
     public static void winner(Text fxMoneyText, Text fxWinText, int vedmal, int vedmalScaler)  {
         // arguments, fxMoneyText, fxWinText, vedmal, vedmalScaler
-        System.out.println("Winner");
         Peningur.PENINGUR += vedmal*vedmalScaler;
-        System.out.println(Peningur.PENINGUR);
         fxMoneyText.setText("" + Peningur.PENINGUR);
 
         fxWinText.setText("Þú vannst " + vedmal*vedmalScaler + "kr!");
@@ -97,8 +91,8 @@ public class RouletteVinnsla {
     /**
      * Skilar tölunni sem bendirinn
      * í rúlettunni bendir á.
-     * @param fxRouletteImage
-     * @param numbers
+     * @param fxRouletteImage myndin af rúlettuhjólinu
+     * @param numbers fylki af rúlettutölum
      * @return talan sem rúlettan lendir á.
      */
     public static int getnumber(ImageView fxRouletteImage, int[] numbers) {
@@ -106,11 +100,13 @@ public class RouletteVinnsla {
 
         double angleOfNumber = 360 - angle;
 
-        double offSet = -2.6;
-        double step = 360/38.0; // Gradur sem hver tala tekur
+        double offSet = -2.6; // Hliðrun í myndinni
+        double step = 360/38.0; // Gráður sem hver tala tekur
 
         int iterator = 0;
 
+        // Ítrar í gegnum rúlettuhjólið sjálft þangað til
+        // að talan finnst.
         while(iterator*step - offSet < angleOfNumber) {
             iterator++;
         }
@@ -122,16 +118,20 @@ public class RouletteVinnsla {
         }
     }
 
-    public static boolean  checkIfLegalRouletteNumber(TextField fxTextField) {
+    /**
+     * Athugar hvort að talan sem fengin
+     * er úr textfieldinu er á rúlettuhjólinu.
+     * @param fxTextField TextField sem á að athuga
+     * @return true ef hún er á hjólinu, annars false.
+     */
+    public static boolean checkIfLegalRouletteNumber(TextField fxTextField) {
         int i;
         try {
             i = Integer.parseInt(fxTextField.getText());
         } catch (NumberFormatException e) {
-            System.out.println("ekki tala");
             return false;
         }
-        boolean isLegalNumber = i <= 38 && i >= 0;
-        return isLegalNumber;
+        return i <= 38 && i >= 0;
     }
 
 

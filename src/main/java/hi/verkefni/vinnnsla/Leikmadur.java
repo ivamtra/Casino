@@ -31,7 +31,6 @@ public class Leikmadur implements LeikmadurInterface {
      * @return samtala
      */
     public int getSamtals() {
-        //System.out.println(samtala);
         return samtala;
     }
 
@@ -62,7 +61,6 @@ public class Leikmadur implements LeikmadurInterface {
     public void gefaSpil(SpilV spilV) {
         samtala += spilV.getVirdi();
         fjoldiSpila++;
-        //System.out.println(spilV);
 
     }
 
@@ -88,7 +86,6 @@ public class Leikmadur implements LeikmadurInterface {
      */
     public boolean vinnurDealer(LeikmadurInterface leikmadurInterface) {
         int dealerSamtala = leikmadurInterface.getSamtals();
-        //System.out.println(dealerSamtala);
 
         if (dealerSamtala > 21) return true;
 

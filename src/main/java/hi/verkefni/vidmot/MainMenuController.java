@@ -62,15 +62,11 @@ public class MainMenuController implements Initializable {
      */
     @FXML
     public void BlackjackIconHandler(MouseEvent event) throws IOException {
-        System.out.println("Blackjack Icon clicked");
-
         root = FXMLLoader.load(getClass().getResource("newBlackjack-view.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
-
     }
 
 
@@ -82,7 +78,6 @@ public class MainMenuController implements Initializable {
      */
     @FXML
     public void rouletteIconHandler(MouseEvent event) throws IOException {
-        System.out.println("Roulette Icon clicked");
 
         root = FXMLLoader.load(getClass().getResource("roulette-view.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -100,13 +95,10 @@ public class MainMenuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(Peningur.PENINGUR);
         fxMoneyText.setText("" + Peningur.PENINGUR);
     }
 
     public void leidbeiningarHandler(ActionEvent event) throws IOException {
-        System.out.println("Leiðbeiningatakki ýttur");
-
         root = FXMLLoader.load(getClass().getResource("leidbeininga-view.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -115,9 +107,7 @@ public class MainMenuController implements Initializable {
     }
 
     public void leidbeingarHover(MouseEvent mouseEvent) {
-        System.out.println("Hoverað yfir");
         fxLeidbeingaButton.setStyle("-fx-background-color: #d3d3d3");
-
     }
 
     public void paneHovered(MouseEvent mouseEvent) {

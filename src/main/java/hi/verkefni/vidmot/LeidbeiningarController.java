@@ -15,6 +15,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/******************************************************************************
+ *  Nafn    : Ívan Már Þrastarson
+ *
+ *  T-póstur: imt1@hi.is
+ *
+ *
+ *  Lýsing  : Viðmótsklasi fyrir Leiðbeiningar. Inniheldur leiðbeiningar
+ *            leikjanna og aðferð til þess að fara aftur á aðalvalmynd.
+ *
+ *
+ *****************************************************************************/
+
 public class LeidbeiningarController implements Initializable {
 
 
