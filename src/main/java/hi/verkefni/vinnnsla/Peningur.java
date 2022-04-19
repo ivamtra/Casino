@@ -10,7 +10,8 @@ import javafx.scene.control.TextField;
  *
  *
  *  Lýsing  : Vinnsluklasi fyrir pening. Inniheldur eina global breytu
- *  sem samsvarar pening leikmanns.
+ *  sem samsvarar pening leikmanns og föll sem athuga hvort
+ *  að löglegar aðgerðir eru framkvæmdar með peningana.
  *
  *
  *****************************************************************************/
@@ -18,6 +19,12 @@ import javafx.scene.control.TextField;
 public class Peningur {
     public static int PENINGUR;
 
+    /**
+     * Athugar hvort að veðmál
+     * sé lögleg upphæð
+     * @param s strengur
+     * @return true ef s er löglegt veðmál, annars false
+     */
     public static boolean checkIfLegalBettingNumber(String s) {
         int number;
         try {
@@ -28,6 +35,12 @@ public class Peningur {
         }
         return number >= 0;
     }
+
+    /**
+     * Birtir Alert-Dialog sem
+     * segir notanda að hann hafi
+     * sett inn ólöglegt veðmál.
+     */
     public static void illegalNumber() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Casino");
